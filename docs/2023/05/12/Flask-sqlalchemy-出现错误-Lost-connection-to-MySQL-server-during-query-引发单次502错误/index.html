@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本文适用于 Flask-SQLAlchemy3.0.x  错误类型：配置错误 报错详细信息12345678\[2023-05-11 21:06:26,517\] ERROR in app: Exception on &#x2F;page&#x2F; \[GET\]Traceback (most recent call last):[略...]  File &quot;&#x2F;...&#x2F;lib&#x2F;python3.10&#x2F;site">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误">
+<meta property="og:url" content="https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:site_name" content="kiter">
+<meta property="og:description" content="本文适用于 Flask-SQLAlchemy3.0.x  错误类型：配置错误 报错详细信息12345678\[2023-05-11 21:06:26,517\] ERROR in app: Exception on &#x2F;page&#x2F; \[GET\]Traceback (most recent call last):[略...]  File &quot;&#x2F;...&#x2F;lib&#x2F;python3.10&#x2F;site">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-12T08:00:00.000Z">
+<meta property="article:modified_time" content="2024-01-25T05:37:52.652Z">
+<meta property="article:author" content="kiter">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Flask-sqlalchemy">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+        
+      
+    
+    <!-- title -->
+    <title>Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/06/22/-%E7%BB%84%E5%9B%BE-%E7%83%9F%E5%8F%B0%C2%B7%E9%87%91%E6%B2%99%E6%BB%A9-2023.6.22/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&text=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&is_video=false&description=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误&body=Check out this article: https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&name=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&t=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">报错详细信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">解决方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%96%87%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">写在文后</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kiter</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-05-12T08:00:00.000Z" class="dt-published" itemprop="datePublished">2023-05-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Flask-sqlalchemy/" rel="tag">Flask-sqlalchemy</a>, <a class="p-category" href="/tags/MySQL/" rel="tag">MySQL</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p>本文适用于 <code>Flask-SQLAlchemy3.0.x</code></p>
+</blockquote>
+<p>错误类型：配置错误</p>
+<h2 id="报错详细信息"><a href="#报错详细信息" class="headerlink" title="报错详细信息"></a>报错详细信息</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\[2023-05-11 21:06:26,517\] ERROR in app: Exception on /page/ \[GET\]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">[略...]</span><br><span class="line">  File &quot;/.../lib/python3.10/site-packages/pymysql/connections.py&quot;, line 748, in \_read\_bytes</span><br><span class="line">    raise err.OperationalError(</span><br><span class="line">pymysql.err.OperationalError: (2013, &#x27;Lost connection to MySQL server during query&#x27;)</span><br><span class="line">The above exception was the direct cause of the following exception:</span><br><span class="line">[引起的其他错误]</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>通过配置<code>pool_recycle</code>参数对超时的连接进行回收。</p>
+<p>步骤：</p>
+<ol>
+<li>在数据库中执行SQL语句：show global variables like ‘%timeout%’;</li>
+<li>获取wait_timeout的值（默认3600）</li>
+<li>在flask中（实例化sqlalchemy之前）设置配置：<code>app.config[&#39;SQLALCHEMY_ENGINE_OPTIONS&#39;]=&#123;&#39;pool_recycle&#39;:2000&#125;</code></li>
+</ol>
+<h2 id="写在文后"><a href="#写在文后" class="headerlink" title="写在文后"></a>写在文后</h2><p>自Flask-SQLAlchemy3.0.x后，大多数可配置项已经失效，例如：</p>
+<p>SQLALCHEMY_POOL_TIMEOUT</p>
+<p>指定数据库连接池的超时时间。默认是 10。<br>SQLALCHEMY_POOL_RECYCLE自动回收连接的秒数。这对 MySQL 是必须的，默认 情况下 MySQL 会自动移除闲置 8 小时或者以上的连接。 需要注意地是如果使用 MySQL 的话， Flask-SQLAlchemy 会自动地设置这个值为 2 小时。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">报错详细信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">解决方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%96%87%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">写在文后</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&text=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&is_video=false&description=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误&body=Check out this article: https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&title=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&name=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.zaiag.com/2023/05/12/Flask-sqlalchemy-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF-Lost-connection-to-MySQL-server-during-query-%E5%BC%95%E5%8F%91%E5%8D%95%E6%AC%A1502%E9%94%99%E8%AF%AF/&t=Flask-sqlalchemy使用MySQL数据库出现错误(2013, &#39;Lost connection to MySQL server during query&#39;)引发单次访问502错误"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2024
+    kiter
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     -->
+        <li><a href="mailto:kiter@zaiag.com">联系我</a></li>
+        <li><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/#/Integrated/index">鲁ICP备2020050236号</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
